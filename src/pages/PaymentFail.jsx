@@ -1,24 +1,22 @@
-import { useEffect } from "react";
-import axios from "axios";
-import { Link, useSearchParams } from "react-router-dom";
-
-const API = import.meta.env.VITE_API_URL;
+import { Link } from "react-router-dom";
 
 function PaymentFail() {
-  const [searchParams] = useSearchParams();
-  const tranId = searchParams.get("tran_id");
-
-  useEffect(() => {
-    if (tranId) {
-      axios.patch(`${API}/payment/fail/${tranId}`);
-    }
-  }, [tranId]);
-
   return (
-    <div className="container">
-      <h2>❌ Payment Failed</h2>
-      <p>Your payment was not completed.</p>
-      <Link to="/checkout">Try Again</Link>
+    <div className="payment-page">
+      <div className="payment-card">
+        <div className="payment-icon failed">❌</div>
+        <h2>Payment Failed</h2>
+        <p>Your payment could not be completed.</p>
+
+        <div className="payment-actions">
+          <Link to="/cart" className="btn">
+            Try Again
+          </Link>
+          <Link to="/products" className="btn secondary-btn">
+            Continue Shopping
+          </Link>
+        </div>
+      </div>
     </div>
   );
 }

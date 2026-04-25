@@ -1,44 +1,52 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
-import { Link } from "react-router-dom";
+import ProductCard from "../components/ProductCard";
 
-const API = "http://localhost:5000/api";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 
-function Products() {
+export default function Products() {
   const [products, setProducts] = useState([]);
+  const [error, setError] = useState("");
+
+  const loadProducts = async () => {
+    try {
+      const res = await fetch(`${API_URL}/products`);
+      const data = await res.json();
+
+      console.log("Products response:", data);
+
+      const productList = Array.isArray(data) ? data : data.products || [];
+      setProducts(productList);
+    } catch (err) {
+      console.error(err);
+      setError("Products load failed");
+    }
+  };
 
   useEffect(() => {
-    axios.get(`${API}/products`)
-      .then(res => setProducts(res.data))
-      .catch(err => console.log(err));
+    loadProducts();
   }, []);
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h2>Products</h2>
+    <div className="min-h-screen bg-slate-100 px-4 py-10">
+      <div className="max-w-7xl mx-auto">
+        <h1 className="text-3xl font-bold mb-8">Products</h1>
 
-      {products.map((p) => (
-        <Link
-          key={p._id}
-          to={`/products/${p._id}`}
-          style={{ textDecoration: "none", color: "black" }}
-        >
-          <div style={{
-            border: "1px solid #ccc",
-            padding: "10px",
-            marginBottom: "10px",
-            borderRadius: "10px",
-            cursor: "pointer"
-          }}>
-            <img src={p.image} alt="" width="100%" />
-            <h3>{p.name}</h3>
-            <p>{p.category}</p>
-            <p>৳ {p.price}</p>
+        {error && (
+          <div className="bg-red-100 text-red-700 px-4 py-3 rounded-xl mb-5">
+            {error}
           </div>
-        </Link>
-      ))}
+        )}
+
+        {products.length === 0 ? (
+          <p className="text-slate-500">No products found.</p>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {products.map((product) => (
+              <ProductCard key={product._id} product={product} />
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
-
-export default Products;

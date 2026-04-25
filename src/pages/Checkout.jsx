@@ -1,109 +1,174 @@
 import { useState } from "react";
-import axios from "axios";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
 
-const API = import.meta.env.VITE_API_URL;
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 
-function Checkout() {
-  const { cart } = useCart();
-  const { user, token } = useAuth();
+export default function Checkout() {
+  const cartContext = useCart();
+  const authContext = useAuth();
+
+  const cartItems = cartContext?.cartItems || cartContext?.cart || [];
+  const clearCart = cartContext?.clearCart || (() => {});
+
+  const user = authContext?.user;
+  const token = authContext?.token || localStorage.getItem("token");
 
   const [customer, setCustomer] = useState({
     name: user?.name || "",
     email: user?.email || "",
     phone: "",
-    address: "Dhaka",
+    address: "",
   });
 
-  const total = cart.reduce((sum, item) => sum + Number(item.price), 0);
+  const [loading, setLoading] = useState(false);
 
-  const handlePayment = async () => {
+  const totalAmount = cartItems.reduce(
+    (sum, item) => sum + Number(item.price || 0) * Number(item.quantity || 1),
+    0
+  );
+
+  const handleChange = (e) => {
+    setCustomer({ ...customer, [e.target.name]: e.target.value });
+  };
+
+  const handlePayNow = async () => {
+    if (!token) {
+      alert("Please login first");
+      return;
+    }
+
+    if (cartItems.length === 0) {
+      alert("Cart is empty");
+      return;
+    }
+
+    if (!customer.name || !customer.email || !customer.phone || !customer.address) {
+      alert("Please fill all fields");
+      return;
+    }
+
     try {
-      if (!token) return alert("Please login first");
-      if (cart.length === 0) return alert("Cart is empty");
-      if (!customer.phone) return alert("Please enter phone number");
+      setLoading(true);
 
-      const { data } = await axios.post(
-        `${API}/payment/create-payment`,
-        { cart, customer },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const products = cartItems.map((item) => ({
+        product: item._id,
+        name: item.name,
+        price: item.price,
+        quantity: item.quantity || 1,
+        duration: item.duration || item.selectedDuration || "1 Month",
+      }));
 
+      const res = await fetch(`${API_URL}/payment/init`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          products,
+          totalAmount,
+          customer,
+        }),
+      });
+
+      const data = await res.json();
       console.log("Payment response:", data);
 
-      if (!data.url) {
-        return alert("Payment URL not found");
+      if (data?.success && data?.gatewayUrl) {
+        clearCart();
+        window.location.href = data.gatewayUrl;
+      } else {
+        alert(data?.message || "Gateway URL not found");
       }
-
-      window.location.href = data.url;
     } catch (error) {
-      console.log("Payment error:", error.response?.data || error.message);
-      alert(error.response?.data?.message || "Payment error");
+      console.error("Payment error:", error);
+      alert("Payment failed");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="container">
-      <h2>Checkout</h2>
+    <div className="min-h-screen bg-gray-100 px-4 py-10">
+      <div className="max-w-5xl mx-auto bg-white rounded-2xl shadow-lg p-6 md:p-10">
+        <h1 className="text-3xl font-bold mb-6">Checkout</h1>
 
-      {cart.length === 0 ? (
-        <p>Your cart is empty</p>
-      ) : (
-        <>
-          {cart.map((item) => (
-            <p key={item._id}>
-              {item.name} — ৳{item.price}
-            </p>
-          ))}
+        {cartItems.length === 0 ? (
+          <p>Your cart is empty.</p>
+        ) : (
+          <>
+            <div className="space-y-4 mb-6">
+              {cartItems.map((item, index) => (
+                <div
+                  key={item._id || index}
+                  className="flex justify-between border-b pb-3"
+                >
+                  <div>
+                    <h3 className="font-semibold">
+                      {item.name}{" "}
+                      <span className="text-sm text-blue-600">
+                        {item.duration || item.selectedDuration || "1 Month"}
+                      </span>
+                    </h3>
+                    <p>
+                      ৳{item.price} × {item.quantity || 1}
+                    </p>
+                  </div>
 
-          <h3>Total: ৳{total}</h3>
+                  <p className="font-bold">
+                    ৳{Number(item.price || 0) * Number(item.quantity || 1)}
+                  </p>
+                </div>
+              ))}
+            </div>
 
-          <input
-            type="text"
-            placeholder="Name"
-            value={customer.name}
-            onChange={(e) =>
-              setCustomer({ ...customer, name: e.target.value })
-            }
-          />
+            <h2 className="text-2xl font-bold mb-6">Total: ৳{totalAmount}</h2>
 
-          <input
-            type="email"
-            placeholder="Email"
-            value={customer.email}
-            onChange={(e) =>
-              setCustomer({ ...customer, email: e.target.value })
-            }
-          />
+            <div className="grid gap-4">
+              <input
+                name="name"
+                value={customer.name}
+                onChange={handleChange}
+                placeholder="Full Name"
+                className="border rounded-xl px-4 py-3"
+              />
 
-          <input
-            type="text"
-            placeholder="Phone"
-            value={customer.phone}
-            onChange={(e) =>
-              setCustomer({ ...customer, phone: e.target.value })
-            }
-          />
+              <input
+                name="email"
+                value={customer.email}
+                onChange={handleChange}
+                placeholder="Email"
+                className="border rounded-xl px-4 py-3"
+              />
 
-          <input
-            type="text"
-            placeholder="Address"
-            value={customer.address}
-            onChange={(e) =>
-              setCustomer({ ...customer, address: e.target.value })
-            }
-          />
+              <input
+                name="phone"
+                value={customer.phone}
+                onChange={handleChange}
+                placeholder="Phone"
+                className="border rounded-xl px-4 py-3"
+              />
 
-          <button onClick={handlePayment}>Pay Now</button>
-        </>
-      )}
+              <input
+                name="address"
+                value={customer.address}
+                onChange={handleChange}
+                placeholder="Address"
+                className="border rounded-xl px-4 py-3"
+              />
+            </div>
+
+            <button
+              onClick={handlePayNow}
+              disabled={loading}
+              className="mt-6 bg-blue-700 text-white px-6 py-3 rounded-xl font-semibold disabled:bg-gray-400"
+            >
+              {loading ? "Processing..." : "Pay Now"}
+            </button>
+          </>
+        )}
+      </div>
     </div>
   );
 }
-
-export default Checkout;

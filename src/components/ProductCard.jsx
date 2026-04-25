@@ -5,11 +5,17 @@ function ProductCard({ product }) {
     <div className="card">
       <img src={product.image} alt={product.name} />
 
-      <Link to={`/product/${product._id}`}>
-        <h3>{product.name}</h3>
+      <Link to={`/products/${product._id}`}>
+        <h3>
+          {product.name}
+          {product.duration && (
+            <span className="duration-badge"> {product.duration}</span>
+          )}
+        </h3>
       </Link>
+
       <p>{product.description}</p>
-      <h4>৳{product.price}</h4>
+      <h4>৳{product.prices?.["1 Month"] || product.price}</h4>
 
       <Link to={`/products/${product._id}`} className="btn">
         View Details

@@ -1,0 +1,102 @@
+.navbar {
+  background: #0f172a;
+  padding: 14px 16px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav-container {
+  max-width: 1200px;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  color: white;
+  font-size: 24px;
+  font-weight: 900;
+  text-decoration: none;
+}
+
+/* LINKS */
+.nav-links {
+  display: flex;
+  gap: 20px;
+}
+
+.nav-links a {
+  color: #cbd5e1;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.nav-links a.active,
+.nav-links a:hover {
+  color: #60a5fa;
+}
+
+/* RIGHT SIDE */
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.user-name {
+  color: white;
+  font-weight: 800;
+}
+
+/* BUTTONS */
+.login-btn {
+  padding: 8px 14px;
+  border-radius: 10px;
+  background: #1e293b;
+  color: white;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.signup-btn {
+  padding: 8px 14px;
+  border-radius: 10px;
+  background: #2563eb;
+  color: white;
+  text-decoration: none;
+  font-weight: 800;
+}
+
+.logout-btn {
+  padding: 8px 14px;
+  border-radius: 10px;
+  background: #ef4444;
+  color: white;
+  border: none;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+/* 🔥 MOBILE RESPONSIVE */
+@media (max-width: 768px) {
+  .nav-container {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .nav-links {
+    width: 100%;
+    overflow-x: auto;
+    gap: 14px;
+  }
+
+  .nav-links a {
+    white-space: nowrap;
+  }
+
+  .user-name {
+    display: none;
+  }
+}
