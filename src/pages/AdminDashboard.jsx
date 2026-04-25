@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./AdminDashboard.css";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+const API_URL = import.meta.env.VITE_API_URL || "https://officialtoolstore-server-1.onrender.com/api";
 
 export default function AdminDashboard() {
   const [products, setProducts] = useState([]);

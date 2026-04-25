@@ -4,7 +4,9 @@ import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import "./Login.css";
 
-const API = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+const API =
+  import.meta.env.VITE_API_URL ||
+  "https://officialtoolstore-server-1.onrender.com/api";
 
 function Login() {
   const navigate = useNavigate();
@@ -37,10 +39,7 @@ function Login() {
     try {
       setLoading(true);
 
-      const res = await axios.post(`${API}/auth/login`, {
-        email: form.email,
-        password: form.password,
-      });
+      const res = await axios.post(`${API}/auth/login`, form);
 
       const userData = res.data?.user;
       const userToken = res.data?.token;
@@ -69,9 +68,7 @@ function Login() {
       <div className="login-box">
         <div className="login-left">
           <span className="login-badge">Official Tool Store</span>
-
           <h1>Welcome Back</h1>
-
           <p>
             Login to buy premium digital tools, manage your orders and submit
             product reviews.
@@ -98,7 +95,6 @@ function Login() {
               placeholder="Email address"
               value={form.email}
               onChange={handleChange}
-              autoComplete="email"
               required
             />
 
@@ -109,7 +105,6 @@ function Login() {
               placeholder="Password"
               value={form.password}
               onChange={handleChange}
-              autoComplete="current-password"
               required
             />
 
