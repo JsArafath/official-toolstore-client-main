@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # 🛒 Official Tool Store — Frontend
 
 A responsive React frontend for an eCommerce website that sells legally authorized digital tools and software subscriptions.
