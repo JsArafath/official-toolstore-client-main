@@ -1,17 +1,27 @@
 import { useEffect, useState } from "react";
 import ProductCard from "../components/ProductCard";
 
-const API_URL = import.meta.env.VITE_API_URL || "https://officialtoolstore-server-1.onrender.com/api";
+const API_URL =
+  import.meta.env.VITE_API_URL ||
+  "https://officialtoolstore-server-1.onrender.com/api";
 
 export default function Products() {
   const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   const loadProducts = async () => {
     try {
-      const res = await fetch(`${API_URL}/products`);
-      const data = await res.json();
+      setLoading(true);
+      setError("");
 
+      const res = await fetch(`${API_URL}/products`);
+
+      if (!res.ok) {
+        throw new Error("Products request failed");
+      }
+
+      const data = await res.json();
       console.log("Products response:", data);
 
       const productList = Array.isArray(data) ? data : data.products || [];
@@ -19,6 +29,8 @@ export default function Products() {
     } catch (err) {
       console.error(err);
       setError("Products load failed");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -37,7 +49,14 @@ export default function Products() {
           </div>
         )}
 
-        {products.length === 0 ? (
+        {loading ? (
+          <div className="flex flex-col items-center justify-center py-24">
+            <div className="w-14 h-14 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+            <p className="mt-4 text-slate-600 font-medium">
+              Loading products...
+            </p>
+          </div>
+        ) : products.length === 0 ? (
           <p className="text-slate-500">No products found.</p>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
