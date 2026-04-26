@@ -1,25 +1,38 @@
 import { Link } from "react-router-dom";
+import "./ProductCard.css";
 
 function ProductCard({ product }) {
+  const price = product.prices?.["1 Month"] || product.price;
+
   return (
-    <div className="card">
-      <img src={product.image} alt={product.name} />
+    <div className="premium-product-card">
+      <Link to={`/products/${product._id}`} className="premium-product-img">
+        <img src={product.image} alt={product.name} />
 
-      <Link to={`/products/${product._id}`}>
-        <h3>
-          {product.name}
-          {product.duration && (
-            <span className="duration-badge"> {product.duration}</span>
-          )}
-        </h3>
+        {product.duration && (
+          <span className="premium-duration">{product.duration}</span>
+        )}
       </Link>
 
-      <p>{product.description}</p>
-      <h4>৳{product.prices?.["1 Month"] || product.price}</h4>
+      <div className="premium-product-body">
+        <Link to={`/products/${product._id}`} className="premium-title-link">
+          <h3>{product.name}</h3>
+        </Link>
 
-      <Link to={`/products/${product._id}`} className="btn">
-        View Details
-      </Link>
+        <p>
+          {product.description?.length > 120
+            ? product.description.slice(0, 120) + "..."
+            : product.description}
+        </p>
+
+        <div className="premium-product-footer">
+          <h4>৳{price}</h4>
+
+          <Link to={`/products/${product._id}`} className="premium-details-btn">
+            View Details
+          </Link>
+        </div>
+      </div>
     </div>
   );
 }
