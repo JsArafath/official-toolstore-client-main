@@ -1,14 +1,19 @@
 import { useEffect, useState } from "react";
 import "./AdminDashboard.css";
 
-const API_URL = import.meta.env.VITE_API_URL || "https://officialtoolstore-server-1.onrender.com/api";
+const API_URL =
+  import.meta.env.VITE_API_URL ||
+  "https://officialtoolstore-server-1.onrender.com/api";
+
+const IMGBB_API_KEY = "YOUR_IMGBB_API_KEY";
 
 export default function AdminDashboard() {
   const [products, setProducts] = useState([]);
+  const [imageFile, setImageFile] = useState(null);
+  const [uploading, setUploading] = useState(false);
 
   const [form, setForm] = useState({
     name: "",
-    image: "",
     category: "",
     description: "",
     prices: {
@@ -45,6 +50,27 @@ export default function AdminDashboard() {
     });
   };
 
+  const uploadImageToImgBB = async (file) => {
+    const imageData = new FormData();
+    imageData.append("image", file);
+
+    const res = await fetch(
+      `https://api.imgbb.com/1/upload?key=${ "3690e609e27c51c1b526b7acd3fb28d5"}`,
+      {
+        method: "POST",
+        body: imageData,
+      }
+    );
+
+    const data = await res.json();
+
+    if (!res.ok || !data.success) {
+      throw new Error("Image upload failed");
+    }
+
+    return data.data.url;
+  };
+
   const handleAddProduct = async (e) => {
     e.preventDefault();
 
@@ -55,51 +81,67 @@ export default function AdminDashboard() {
       return;
     }
 
-    const productData = {
-      name: form.name,
-      image: form.image,
-      category: form.category,
-      description: form.description,
-      prices: {
-        "1 Month": form.prices["1 Month"],
-        "3 Months": form.prices["3 Months"],
-        "6 Months": form.prices["6 Months"],
-        "1 Year": form.prices["1 Year"],
-      },
-    };
-
-    const res = await fetch(`${API_URL}/products`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(productData),
-    });
-
-    const data = await res.json();
-
-    if (!res.ok) {
-      alert(data.message || "Product add failed");
+    if (!imageFile) {
+      alert("Please select an image");
       return;
     }
 
-    alert("Product added successfully");
+    try {
+      setUploading(true);
 
-    setForm({
-      name: "",
-      image: "",
-      category: "",
-      description: "",
-      prices: {
-        "1 Month": "",
-        "3 Months": "",
-        "6 Months": "",
-        "1 Year": "",
-      },
-    });
+      const imageUrl = await uploadImageToImgBB(imageFile);
 
-    loadProducts();
+      const productData = {
+        name: form.name,
+        image: imageUrl,
+        category: form.category,
+        description: form.description,
+        prices: {
+          "1 Month": form.prices["1 Month"],
+          "3 Months": form.prices["3 Months"],
+          "6 Months": form.prices["6 Months"],
+          "1 Year": form.prices["1 Year"],
+        },
+      };
+
+      const res = await fetch(`${API_URL}/products`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(productData),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        alert(data.message || "Product add failed");
+        return;
+      }
+
+      alert("Product added successfully");
+
+      setForm({
+        name: "",
+        category: "",
+        description: "",
+        prices: {
+          "1 Month": "",
+          "3 Months": "",
+          "6 Months": "",
+          "1 Year": "",
+        },
+      });
+
+      setImageFile(null);
+      e.target.reset();
+      loadProducts();
+    } catch (error) {
+      alert(error.message || "Something went wrong");
+    } finally {
+      setUploading(false);
+    }
   };
 
   const handleDelete = async (id) => {
@@ -146,10 +188,9 @@ export default function AdminDashboard() {
             />
 
             <input
-              name="image"
-              value={form.image}
-              onChange={handleChange}
-              placeholder="Image URL"
+              type="file"
+              accept="image/*"
+              onChange={(e) => setImageFile(e.target.files[0])}
               required
             />
 
@@ -204,7 +245,9 @@ export default function AdminDashboard() {
               required
             />
 
-            <button type="submit">Add Product</button>
+            <button type="submit" disabled={uploading}>
+              {uploading ? "Uploading..." : "Add Product"}
+            </button>
           </form>
         </div>
 
@@ -215,6 +258,20 @@ export default function AdminDashboard() {
             <div className="admin-product" key={product._id}>
               <div>
                 <h3>{product.name}</h3>
+
+                {product.image && (
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    style={{
+                      width: "90px",
+                      height: "60px",
+                      objectFit: "cover",
+                      borderRadius: "10px",
+                      marginBottom: "10px",
+                    }}
+                  />
+                )}
 
                 {product.prices?.["1 Month"] > 0 && (
                   <p>1 Month: ৳{product.prices["1 Month"]}</p>

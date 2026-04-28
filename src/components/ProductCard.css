@@ -1,26 +1,48 @@
+/* =========================
+   🔥 SECTION
+========================= */
+
 .home-section {
-  max-width: 1520px;
-  margin: 35px auto;
-  padding: 0 14px;
+  max-width: 1550px;
+  margin: 40px auto;
+  padding: 0 16px;
 }
+
+/* =========================
+   🔥 GRID (5 COLUMN PERFECT)
+========================= */
 
 .home-product-grid {
   display: grid;
-  grid-template-columns: repeat(5, minmax(240px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(5, minmax(220px, 1fr));
+  gap: 22px;
 }
 
+/* =========================
+   🔥 CARD
+========================= */
+
 .premium-product-card {
-  background: #fff;
+  background: #ffffff;
   border-radius: 18px;
   padding: 12px;
   overflow: hidden;
   box-shadow: 0 12px 30px rgba(15, 23, 42, 0.1);
+  transition: 0.3s ease;
 }
+
+.premium-product-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 40px rgba(37, 99, 235, 0.15);
+}
+
+/* =========================
+   🔥 IMAGE (BIG HEIGHT)
+========================= */
 
 .premium-product-img {
   display: block;
-  height: 150px;
+  height: 175px; /* 🔥 bigger */
   border-radius: 14px;
   overflow: hidden;
   background: #f1f5f9;
@@ -32,6 +54,10 @@
   object-fit: cover;
 }
 
+/* =========================
+   🔥 BODY
+========================= */
+
 .premium-product-body {
   padding: 12px 6px 4px;
 }
@@ -41,64 +67,71 @@
 }
 
 .premium-product-body h3 {
-  font-size: 20px;
-  line-height: 1.15;
-  font-weight: 900;
+  font-size: 18px;
+  line-height: 1.2;
+  font-weight: 800;
   color: #0f172a;
   margin: 0 0 8px;
 }
 
 .premium-product-body p {
-  font-size: 13px;
-  line-height: 1.45;
+  font-size: 12.5px;
+  line-height: 1.4;
   color: #64748b;
-  height: 56px;
+  height: 50px;
   overflow: hidden;
   margin: 0 0 12px;
 }
+
+/* =========================
+   🔥 FOOTER
+========================= */
 
 .premium-product-footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
+  gap: 8px;
 }
 
 .premium-product-footer h4 {
   margin: 0;
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 900;
   color: #16a34a;
   white-space: nowrap;
 }
 
+/* BUTTON */
+
 .premium-details-btn {
-  padding: 8px 13px;
+  padding: 7px 12px;
   border-radius: 10px;
-  background: #2563eb;
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
   color: #fff;
-  font-size: 12px;
-  font-weight: 900;
+  font-size: 11px;
+  font-weight: 800;
   text-decoration: none;
   white-space: nowrap;
+  transition: 0.2s;
 }
+
+.premium-details-btn:hover {
+  transform: scale(1.05);
+}
+
+/* =========================
+   🔥 RESPONSIVE
+========================= */
 
 @media (max-width: 1400px) {
   .home-product-grid {
-    grid-template-columns: repeat(5, minmax(210px, 1fr));
+    grid-template-columns: repeat(5, minmax(200px, 1fr));
     gap: 18px;
   }
 
   .premium-product-img {
-    height: 135px;
-  }
-
-  .premium-product-body h3 {
-    font-size: 18px;
-  }
-
-  .premium-product-footer h4 {
-    font-size: 21px;
+    height: 150px;
   }
 }
 

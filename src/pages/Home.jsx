@@ -114,7 +114,7 @@ export default function Home() {
           <div className="empty-box">No products found</div>
         ) : (
           <div className="home-product-grid">
-            {filteredProducts.slice(0, 8).map((product) => (
+            {filteredProducts.slice(0, 10).map((product) => (
               <ProductCard key={product._id} product={product} />
             ))}
           </div>
