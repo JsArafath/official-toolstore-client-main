@@ -234,3 +234,441 @@
     display: none;
   }
 }
+
+
+.brand-strip,
+.deal-banner,
+.newsletter-box {
+  max-width: 1400px;
+  margin: 50px auto;
+  padding: 0 20px;
+}
+
+.brand-strip {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 14px;
+}
+
+.brand-strip div {
+  background: white;
+  padding: 18px;
+  border-radius: 18px;
+  text-align: center;
+  font-weight: 900;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+}
+
+.home-search {
+  max-width: 360px;
+  margin: 0;
+}
+
+.section-head p,
+.center-title p {
+  color: #64748b;
+  margin-top: 8px;
+}
+
+.center-title {
+  text-align: center;
+  margin-bottom: 35px;
+}
+
+.home-product-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)) !important;
+  gap: 28px !important;
+}
+
+.deal-banner {
+  background: linear-gradient(135deg, #2563eb, #020617);
+  color: white;
+  border-radius: 32px;
+  padding: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 25px;
+  box-shadow: 0 25px 70px rgba(37, 99, 235, 0.25);
+}
+
+.deal-badge {
+  display: inline-block;
+  background: white;
+  color: #2563eb;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-weight: 900;
+  margin-bottom: 15px;
+}
+
+.deal-banner h2 {
+  font-size: 36px;
+  margin: 0 0 10px;
+}
+
+.deal-banner p {
+  color: #dbeafe;
+}
+
+.deal-banner a {
+  background: white;
+  color: #2563eb;
+  padding: 16px 28px;
+  border-radius: 18px;
+  font-weight: 900;
+}
+
+.why-grid,
+.testimonial-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22px;
+}
+
+.testimonial-grid {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+
+
+.newsletter-box {
+  text-align: center;
+  padding: 50px 28px;
+  background: linear-gradient(180deg, #ffffff, #eff6ff);
+}
+
+.newsletter-box h2 {
+  font-size: 36px;
+  margin: 0 0 10px;
+}
+
+.newsletter-form {
+  max-width: 560px;
+  margin: 25px auto 0;
+  display: flex;
+  gap: 12px;
+}
+
+.newsletter-form input {
+  margin-bottom: 0;
+}
+
+.newsletter-form button {
+  white-space: nowrap;
+}
+
+@media (max-width: 900px) {
+  .brand-strip,
+  .why-grid,
+  .testimonial-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .deal-banner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .section-head {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .home-search {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 520px) {
+  .brand-strip,
+  .why-grid,
+  .testimonial-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .deal-banner h2,
+  .newsletter-box h2 {
+    font-size: 28px;
+  }
+
+  .newsletter-form {
+    flex-direction: column;
+  }
+}
+
+.home-page {
+  background:
+    radial-gradient(circle at top left, rgba(37, 99, 235, 0.12), transparent 28%),
+    linear-gradient(180deg, #f8fbff 0%, #eef3fb 45%, #f8fafc 100%);
+  padding-bottom: 40px;
+}
+
+/* Hero bottom spacing fix */
+.home-hero {
+  margin-bottom: 90px !important;
+}
+
+/* Brand strip premium floating look */
+.brand-strip {
+  margin-top: -55px !important;
+  position: relative;
+  z-index: 5;
+  padding: 0 28px !important;
+}
+
+.brand-strip div {
+  background: rgba(255, 255, 255, 0.82) !important;
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  box-shadow: 0 22px 50px rgba(15, 23, 42, 0.12) !important;
+  padding: 22px !important;
+  border-radius: 22px !important;
+  font-size: 20px;
+  transition: 0.3s ease;
+}
+
+.brand-strip div:hover {
+  transform: translateY(-6px);
+  background: #ffffff !important;
+}
+
+/* Product section premium card */
+.home-section {
+  max-width: 1480px !important;
+  margin: 80px auto !important;
+  padding: 0 28px !important;
+}
+
+.section-head {
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  border-radius: 28px;
+  padding: 26px 30px;
+  box-shadow: 0 20px 55px rgba(15, 23, 42, 0.08);
+  margin-bottom: 34px;
+}
+
+.section-head h2 {
+  font-size: 42px !important;
+  letter-spacing: -1px;
+  margin-bottom: 8px;
+}
+
+.section-head p {
+  font-size: 18px;
+}
+
+/* Search input */
+.home-search {
+  height: 58px;
+  border-radius: 18px !important;
+  background: #ffffff;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+  border: 1px solid #e2e8f0 !important;
+  font-weight: 600;
+}
+
+/* Products grid spacing */
+.home-product-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
+  gap: 34px !important;
+}
+
+/* Product card more premium */
+.premium-product-card {
+  border-radius: 30px !important;
+  background: rgba(255, 255, 255, 0.92) !important;
+  backdrop-filter: blur(14px);
+  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.13) !important;
+}
+
+.premium-product-card img {
+  height: 250px !important;
+}
+
+.premium-product-card h3 {
+  font-size: 23px !important;
+}
+
+.premium-btn {
+  border-radius: 18px !important;
+  padding: 15px !important;
+  background: linear-gradient(135deg, #2563eb, #0f172a) !important;
+}
+
+/* Deal/why/review polish */
+.why-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22px;
+  margin-top: 30px;
+}
+
+.why-card {
+  background: linear-gradient(180deg, #ffffff, #f8fbff);
+  border-radius: 22px;
+  padding: 24px;
+  text-align: left;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 14px 35px rgba(15, 23, 42, 0.08);
+  transition: 0.3s ease;
+}
+
+.why-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 22px 55px rgba(37, 99, 235, 0.18);
+  border-color: #2563eb33;
+}
+
+.why-icon {
+  width: 50px;
+  height: 50px;
+  display: grid;
+  place-items: center;
+  font-size: 22px;
+  border-radius: 14px;
+  background: #eff6ff;
+  margin-bottom: 14px;
+}
+
+.why-card h3 {
+  font-size: 18px;
+  font-weight: 800;
+  margin-bottom: 8px;
+  color: #0f172a;
+}
+
+.why-card p {
+  font-size: 14px;
+  color: #64748b;
+  line-height: 1.6;
+}
+
+@media (max-width: 1000px) {
+  .why-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 500px) {
+  .why-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .home-hero {
+    margin-bottom: 60px !important;
+  }
+
+  .brand-strip {
+    margin-top: -35px !important;
+  }
+
+  .section-head {
+    padding: 22px;
+  }
+
+  .section-head h2 {
+    font-size: 30px !important;
+  }
+}
+
+.home-product-grid {
+  display: grid !important;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 20px;
+}
+
+/* Laptop */
+@media (max-width: 1200px) {
+  .home-product-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Tablet */
+@media (max-width: 900px) {
+  .home-product-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .home-product-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.premium-product-card img {
+  height: 180px !important;
+}
+
+/* ✅ Final Product Grid: 5 cards desktop */
+.home-product-grid {
+  width: 100%;
+  display: grid !important;
+  grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+  gap: 22px !important;
+}
+
+/* ✅ Card size fix for 5 columns */
+.premium-product-card img {
+  height: 180px !important;
+}
+
+.premium-product-card h3 {
+  font-size: 18px !important;
+}
+
+.premium-product-card p {
+  font-size: 14px !important;
+  min-height: 66px !important;
+}
+
+.premium-product-card h4 {
+  font-size: 22px !important;
+}
+
+.premium-btn {
+  padding: 12px !important;
+  font-size: 14px !important;
+}
+
+/* Laptop */
+@media (max-width: 1300px) {
+  .home-product-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  }
+}
+
+/* Tablet */
+@media (max-width: 1000px) {
+  .home-product-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+}
+
+/* Mobile */
+@media (max-width: 700px) {
+  .home-product-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .home-product-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+.premium-product-card {
+  max-width: 300px;
+  margin: auto;
+}
+
