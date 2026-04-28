@@ -375,4 +375,3 @@ This project is for educational and commercial use (authorized tools only).
 ## ⭐ Support
 
 If you like this project, give it a ⭐ on GitHub!
->>>>>>> ab75eac (Auth)
